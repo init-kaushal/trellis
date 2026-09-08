@@ -5,7 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+_Nothing yet — the next port from the reference notebook lands here (see `SYNC.md`)._
+
+## [0.2.0] — 2026-09-08
+
+*First tagged release: the September sync with the live reference notebook (the fold convention, adopted 2026-09-08) plus the July framework work that was previously listed under Unreleased.*
+
 ### Added
+- **The fold.** Five always-read files (`MEMORY.md`, `profile.md`, `season_current.md`, `coordinator_state.md`, each `current_focus.md`) carry the line `## ── HISTORY (on demand; agents do not read past this line) ──`. Current state above it, every story below it, agents read to the fold; each header states a budget and the weekly review's **BUDGET CHECK** measures it — over budget means move below the fold, never delete. Three file kinds with three write rules (ledgers edit by ID / working memory replaces sections / logs append) — `core/PROTOCOLS.md → FILE KINDS`.
+- **Skills rewritten around the fold.** The coordinator reads every fold file to the fold, the TRACKER **current-week block** only, the **log tail** (last 2 entries), and a **files-touched-in-7-days** output signal; mentor instructions moved to **`.claude/skills/weekly-review/mentor_prompt.md`** (each agent is spawned with a 3-line call and reads it itself); a **TEAM BOARD** in the WEEK_BRIEF lets mentors see each other; new report fields **VALUE_CHECK / TEAM_LINE / FOCUS_UPDATE / NEW_LESSON–NEW_FACT**; a **fresh-context VERIFIER** agent replaces the coordinator's self-check; a **CORRECTION COUNT** (`CP2 corrections: N · verifier caught: M`) is written every week; an **AskUserQuestion fallback** (post and stop) when the client has no question tool; path discovery = the directory containing `CLAUDE.md` + `mentors/`, with a `find … MEMORY.md` fallback.
+- **`SYNC.md`** — Trellis tracks a live reference notebook: file mapping, generalization rules, Trellis-only blocks that must survive a port, a port checklist, and a one-command drift signal. `core/PROTOCOLS.md` gained a "Keeping Trellis in sync" pointer; `CONTRIBUTING.md` a sync rule.
+
+### Changed — earlier in this release (July 2026)
+- **`intel.md` is always read in full** at every session and every review; `MENTOR_REFRESH` only governs how often it is refreshed (age never gates reading).
+- **Phase-archive layer retired.** The P8 pyramid is now `sessions → log.md → archive/season → archive/year`; season archives are synthesized from `log.md`. DRIFT_CHECK lost the phase-archive and phase-header checks and gained a **fold-health** check; focus-sheet staleness is judged from `## Position → Week`, not a *Last updated* stamp.
+- `SEASON_TRANSITION` rotates `profile.md` and `MEMORY.md` by moving retired entries below the fold (overflow to `profile_history/` / `coordinator_history/` only past ~200 KB). Upgrade 2 tracks recurring asks in `MEMORY.md → ASKS`; Upgrade 4 (comment-response loop) is adopted, no trial clause.
+- `MEMORY.md` sections are `RULES` / `FACTS` / `NEVER-REPEAT` / `ASKS — open` (stories under `## Stories added` below the fold); mentor `PREFLIGHT` is a single `pass:` line plus one line per failure. `current_focus.md` carries a `## Stance` (the mentor's persona) and `## Position → Curriculum section`.
+- Docs (`ARCHITECTURE.md`, `README.md`, `docs/concepts.md`, `docs/quickstart.md`, `docs/customization.md`) updated for the fold, the verifier, the correction count and `mentor_prompt.md`.
+
+### Fixed
+- Install: `profile.md` now lives at `mentors/profile.md` (where every protocol reads it); `scripts/sync.sh` shipped; `coordinator_history/` created under `mentors/`; `profile_history/` documented; `mentor_prompt.md` installed with the skill; `validate.sh` checks the fold line.
+- Privacy: the architecture diagram no longer carries reference-notebook specifics.
+
+### Added — earlier in this release (July 2026)
 - **`mentors/MEMORY.md` — the always-read memory file (LESSONS · FACTS · ASKS).** The trust layer that makes the system *learn*: every correction becomes a one-line pre-flight RULE (LESSONS) that every mentor answers before drafting, so a week-N correction provably changes week-N+1 behaviour; binding facts + a Never-Repeat list (FACTS); and an open-ask ledger with mechanical age-based escalation (ASKS). Shipped as `core/MEMORY.md.template` (empty-seeded), created by `init.sh` and seeded at INTAKE. This is the minimum trust layer for a second user: when you correct it, it stays corrected.
 - **Skills split** — `WEEKLY_REVIEW` and `DOMAIN_SESSION` (the daily/weekly procedures) are carved verbatim into `.claude/skills/weekly-review/SKILL.md` and `.claude/skills/domain-session/SKILL.md`, so they load on trigger instead of depending on the whole manual being read. `core/PROTOCOLS.md` shrank to a lean manual (preamble + INTAKE + skill stubs + the rare protocols + system upgrades). `init.sh` installs the skills into the notebook.
 - **Mentor-report rigor** — mentors now emit a **PREFLIGHT** block (answer every LESSONS rule pass/fail), a **THREE_MOVES** creativity-forcing step, and a **VALUE_CHECK** (value, not completion, is the headline metric). The coordinator runs a **SELF-VERIFICATION PASS** against the plan before you see it, and a **VALIDATION GATE** rejects retrieval-only / underspecified tasks. `WEEK_BRIEFING.md` is written as the full-fidelity read surface.

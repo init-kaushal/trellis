@@ -23,6 +23,10 @@ Thanks for being here. This is a framework intended to outlive any specific tool
 3. Keep PRs focused. One change, one PR.
 4. Update affected docs in the same PR. If you change a protocol, the docs that reference it must reflect it.
 
+## Syncing with the reference notebook
+
+Trellis is the generalization of one live notebook (the reference instance). Procedure changes are validated there first and then ported here, so a PR that changes `.claude/skills/**`, `core/PROTOCOLS.md`, or a template's header/section skeleton should either come from such a port or be written so it can be ported back. `SYNC.md` holds the file mapping, the generalization rules (no personal names, `[ROOT]` paths, connector-agnostic wording), and the Trellis-only blocks that must survive a port. Run its checklist before opening the PR.
+
 ## Code of conduct
 
 Be kind. Be specific. Push back on ideas, not people. If a contributor's PR is wrong, explain why with citations to the principles or to observable failure modes — not with tone.

@@ -25,7 +25,7 @@ At the start of every interaction:
   4. Honor the critical-thinking pass (signal triage, devil's advocate, historical pattern gate). You are not a yes-man.
   5. At session end, write all journal artifacts the protocol specifies. Never skip the write step.
 
-Path discovery: your notebook root is the Project knowledge root. Treat `framework/`, `mentors/`, `profile.md`, `CONFIG.md` as relative paths from there.
+Path discovery: your notebook root is the Project knowledge root. Treat `framework/`, `mentors/`, `mentors/profile.md`, `CONFIG.md` as relative paths from there.
 ```
 
 4. (Optional) If you have MCP connectors configured at the Claude Desktop level (Todoist, Slack, etc.), they're available to all your Projects. The mentor will use them when relevant.

@@ -32,9 +32,9 @@ Some domains do better on different cadences (a multi-year reading goal, a 30-da
 
 ## 5. Path discovery
 
-Different LLM clients mount your notebook differently. The current path-discovery section in `core/PROTOCOLS.md` is written for clients that expose a sandboxed filesystem (Claude Code with `/sessions/<id>/mnt/`-style mounts).
+Different LLM clients mount your notebook differently. The protocols define `[ROOT]` as the directory that contains `CLAUDE.md` and `mentors/`, with a `find … -name MEMORY.md -path '*/mentors/*'` fallback for sandboxed mounts (Cowork's `/sessions/<id>/mnt/…`).
 
-If your client mounts files differently, edit the **PATH DISCOVERY** section near the top of `core/PROTOCOLS.md` (in your notebook's `framework/` copy). For most clients the simplification is:
+If your client mounts files differently, edit the **PATH DISCOVERY** block near the top of `core/PROTOCOLS.md` (in your notebook's `framework/` copy) and at the top of both skills. For most clients the simplification is:
 
 ```
 The user's notebook is at `<NOTEBOOK_ROOT>` (see CONFIG.md).
@@ -45,7 +45,7 @@ That's literally enough for Claude Desktop Projects, ChatGPT Projects, and Copil
 
 ## 6. Critical-thinking discipline
 
-The 3-step pass (signal triage / devil's advocate / historical pattern gate) is defined in `core/PROTOCOLS.md` → `WEEKLY_REVIEW` Phase 2 step 7 and referenced from a few other places. If you find the mentor isn't running it:
+The 3-step pass (signal triage / devil's advocate / historical pattern gate) is defined in `.claude/skills/weekly-review/mentor_prompt.md` step 7 (and inline in the domain-session skill, step 9). If you find the mentor isn't running it:
 
 - Bump `COMM_TONE`.
 - At the start of any session, paste: *"Before giving recommendations, run the critical-thinking pass from PROTOCOLS.md."*
@@ -68,11 +68,11 @@ If you set one up: add its path to `CONFIG.md` (custom variable, e.g. `WIKI_PATH
 
 ## 9. Per-mentor system prompts
 
-You can give each domain mentor its own micro-personality / style by editing the top of `mentors/<domain>/intel.md` with a paragraph like:
+Each domain mentor has a persona: the `## Stance` section of `mentors/<domain>/current_focus.md` (Archetype / Reasons with / Never prescribes / Pushes back by). Edit it, or ask the mentor to, e.g.:
 
-> *"The fitness mentor is a no-nonsense ex-physio. Speaks in measurements and protocols, not platitudes. Will not accept 'I didn't feel like it' as a reason without a follow-up question."*
+> *"Archetype: no-nonsense ex-physio. Reasons with: measurements and protocols, not platitudes. Never prescribes: volume without a recovery plan. Pushes back by: asking a follow-up question before accepting 'I didn't feel like it'."*
 
-The mentor will read this at PREPARE and adopt the framing.
+The mentor adopts the Stance at PREPARE in every session and every weekly review.
 
 ## 10. Migrating from this framework
 
@@ -82,4 +82,4 @@ The whole point of the prose-first design is that you should never feel locked i
 - The protocols are just instructions to the LLM. Strip them out and you have a perfectly valid Obsidian / Logseq / plain folder of notes.
 - The connectors are just configuration. They work with any other system that reads YAML.
 
-Migration plan: copy `mentors/`, `profile.md`, and `CONFIG.md` to the new system. Delete `framework/`. Done.
+Migration plan: copy `mentors/` (it holds `profile.md` and `MEMORY.md`) and `CONFIG.md` to the new system. Delete `framework/`. Done.

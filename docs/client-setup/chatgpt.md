@@ -6,7 +6,7 @@ ChatGPT Projects are similar to Claude Desktop Projects. Less ergonomic for file
 
 1. In ChatGPT, create a new Project. Name it your `WORKSPACE_NAME`.
 2. Upload your notebook as Project files. (ChatGPT Projects accept uploaded files as persistent context.)
-   - Upload `CONFIG.md`, `profile.md`.
+   - Upload `CONFIG.md`, `mentors/profile.md`.
    - Upload everything under `framework/`.
    - Upload everything under `mentors/`.
    - You'll need to re-upload after significant changes — Project files don't auto-sync.
@@ -44,7 +44,7 @@ ChatGPT supports custom GPTs with **Actions** (OpenAPI-defined external calls). 
 
 - Project files are versioned only insofar as you re-upload them. Treat each session's writes as instructions to update your local files, not as the canonical write.
 - The "no autonomous writes" constraint actually maps cleanly to Trellis's principle P2 (the user writes by talking) and P3 (the mentor writes the files) — but here, the "writing" is mediated through copy-paste.
-- Memory features in ChatGPT can conflict with the protocol-defined memory model. Consider disabling ChatGPT Memory for this Project — your `profile.md` is the canonical memory.
+- Memory features in ChatGPT can conflict with the protocol-defined memory model. Consider disabling ChatGPT Memory for this Project — your `mentors/profile.md` is the canonical memory.
 
 ## Recommended models
 

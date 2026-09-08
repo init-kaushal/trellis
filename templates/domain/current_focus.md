@@ -1,37 +1,39 @@
 # <domain> — current focus
 
-> **Mentor's working memory.** Updated by the mentor at session end.
-> Replaces what `state.yaml` used to hold. Pure markdown — no YAML.
+*Budget (above the fold): ≤ 5 KB. Mentor's working memory — a snapshot, not a diary. Read up to the HISTORY fold only: `sed -n '1,/^## ── HISTORY/p' mentors/<domain>/current_focus.md`. Write rule: replace the affected section in place; the reason for a change goes in this week's `log.md` entry; never add a dated paragraph above the fold; retired lines move below the fold. Last updated: <YYYY-MM-DD>.*
 
-*Last updated: <YYYY-MM-DD>*
+## Stance
+- **Archetype**: <the kind of mentor this domain needs, in one phrase — e.g. "patient conservatory teacher", "skeptical seed investor">
+- **Reasons with**: <what this mentor argues from — evidence, numbers, the primary source, the body's signals…>
+- **Never prescribes**: <the thing this mentor refuses to hand down without a reason>
+- **Pushes back by**: <how disagreement is voiced — e.g. "one counter-example and a question", "the log line that contradicts the claim">
 
-## Posture
+## Season goal
+<one or two lines — the season exit criterion for this domain, in the mentor's words. This is the one home; `season_current.md → Exit Criteria` points here.>
 
-- **Tier**: maintenance · deep · dormant
-- **Stakes**: low_personal · medium · high_external
-- **Current phase**: needs intake — run this mentor's first conversation (INTAKE Part B in `PROTOCOLS.md`) before the first working session
-- **In progress**: nothing yet — the first conversation with this mentor sets the baseline
+## Position
+- **Phase**: needs intake — run this mentor's first conversation (INTAKE Part B in `PROTOCOLS.md`) before the first working session
+- **Curriculum section**: `## <the exact header in curriculum.md the mentor reads this week>`
+- **Tier / Stakes**: <maintenance · deep · dormant> / <low_personal · medium · high_external>
+- **Week + trajectory**: <S<N> W<W> · on track / behind by N sessions / ahead — one clause>
 
-> **Phase boundary trigger.** Editing the `Current phase` field above to a new phase is the explicit signal that triggers `archive/phase_<N>_<slug>.md` to be written in the same JOURNAL pass (DOMAIN_SESSION step 11i). Don't bump the field casually; do it when the phase truly advances.
+## In progress (≤ 3)
+- nothing yet — the first conversation with this mentor sets the baseline
 
-## Next planned (next 1–3 sessions)
+## Next planned (≤ 3, dated)
+1. <YYYY-MM-DD · topic / activity>
 
-1. <topic / activity>
-2. <topic / activity>
-3. <topic / activity>
+## Binding F-ids
+<the `MEMORY.md → FACTS` row ids that constrain this domain's plans, one line each: `F## — short fact` · or "none">
 
-## Calibration flags
-
-*Behavioral signals the mentor is actively watching. Set by mentor during DOMAIN_SESSION or WEEKLY_REVIEW.*
-
+## Calibration flags (active only, ≤ 6, each with a set-date)
+*Behavioral signals the mentor is actively watching. Set during DOMAIN_SESSION or WEEKLY_REVIEW; each line starts with its first-seen date.*
 - _(none)_
 
-## Last calibration check
+## Anchor
+<the fixed slot(s) or habit(s) this domain builds around — day, time, what — or "none yet">
 
-*Date the mentor last did a deliberate calibration pass for this domain.*
+## Dates & ladders
+<upcoming dated commitments for this domain and any progression ladder (e.g. distance / tempo / chapter targets by date), one line each>
 
-<YYYY-MM-DD or "not yet">
-
-## Notes
-
-*Free-form mentor notes — open questions, pending decisions, things to watch.*
+## ── HISTORY (on demand; agents do not read past this line) ──

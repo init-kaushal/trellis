@@ -8,7 +8,7 @@ External signal sources that the mentor system can read. **All optional.** The f
 ┌─────────────────────────────────────────────────────────────────┐
 │  WEEKLY_REVIEW Phase 1 — Coordinator Gathers                    │
 │                                                                  │
-│   ├─ Read mentors/, profile.md, season_current.md, etc.         │
+│   ├─ Read mentors/ (profile.md, MEMORY.md, season_current.md, etc.)         │
 │   └─ Read SIGNALS from configured connectors:                    │
 │         · todoist     → task completion data, comments           │
 │         · calendar    → locked external commitments              │

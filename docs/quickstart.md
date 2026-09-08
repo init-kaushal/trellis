@@ -56,11 +56,11 @@ my-notebook/
 │                            #   It says "you are the mentor team, run INTAKE" and
 │                            #   carries your wizard choices (the "Setup brief").
 ├── CONFIG.md                 # your settings (name, rhythm, client)
-├── profile.md               # empty — your mentor fills this in the conversation
 ├── framework/               # the operating manual the mentor reads (PROTOCOLS.md, …)
-├── .claude/skills/          # WEEKLY_REVIEW + DOMAIN_SESSION (load verbatim on trigger)
+├── .claude/skills/          # WEEKLY_REVIEW (SKILL.md + mentor_prompt.md) + DOMAIN_SESSION
 ├── mentors/
-│   ├── MEMORY.md            # empty — fills as you correct your mentors (lessons·facts·asks)
+│   ├── profile.md           # empty — your mentor fills this in the conversation
+│   ├── MEMORY.md            # empty — fills as you correct your mentors (rules·facts·asks)
 │   ├── season_current.md
 │   ├── <each mentor you picked>/   # one folder per mentor, marked "needs intake"
 │   └── …
@@ -85,7 +85,7 @@ In Cowork, type:
 
 No copy-paste needed: when you connected the folder, Claude already loaded `CLAUDE.md`, which tells it to run **`PROTOCOL: INTAKE`** and carries your wizard choices. It runs:
 
-- **Part A — gets to know you** (once): who you are, your real weekly time, and confirms the rhythm you set in the wizard. Writes `profile.md`.
+- **Part A — gets to know you** (once): who you are, your real weekly time, and confirms the rhythm you set in the wizard. Writes `mentors/profile.md`.
 - **Part B — one mentor at a time**: for each mentor you hired, that domain's expert runs its *own* first session — your goals there, your honest starting point, the domain-specific questions a real coach would ask, and it ends by doing **one real piece of work** with you, then asks you to confirm it got things right.
 
 You talk; Claude writes every file. This is the conversation — it lives in Cowork, not the wizard.
@@ -98,7 +98,7 @@ After intake, your notebook should have real content. In a terminal:
 
 ```bash
 cd ../my-notebook
-cat profile.md                 # should describe you (no <placeholders>)
+cat mentors/profile.md         # should describe you (no <placeholders>)
 ls mentors/*/sessions/         # should list your first session file(s)
 ```
 
@@ -147,7 +147,7 @@ You run these by **talking to Claude in Cowork** (never by editing files yoursel
 |---|---|
 | `let's do a session on <domain>` | A normal coaching session in that domain. |
 | `hire a <domain> mentor` | Adds a new mentor and runs its first conversation (INTAKE Part B). |
-| `weekly review` | The coordinator reviews your week across all mentors and plans the next one. |
+| `weekly review` | The coordinator reviews your week across all mentors, has a fresh-context verifier check the plan before you see it, and plans the next one. |
 | `season review` | End-of-season retrospective + designs the next season. |
 
 ---
