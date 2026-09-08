@@ -5,7 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-_Nothing yet — the next port from the reference notebook lands here (see `SYNC.md`)._
+### Added
+- **`scripts/migrate.sh` — apply a framework update to an EXISTING notebook without touching earned data.** The safe counterpart to `init.sh`: refreshes `framework/` copies + every file under `.claude/skills/` (incl. `mentor_prompt.md`), adds `mentors/MEMORY.md` from the template only if missing (never overwrites), scaffolds any new dirs the current framework expects (`mentors/{coordinator_history,profile_history}/`), runs `validate.sh`, and writes **nothing else** — `CONFIG.md`, `mentors/profile.md`, `CLAUDE.md`, `season_current.md`, `coordinator_state.md`, `cross_domain.md`, and every `mentors/<domain>/*.md` are left untouched. Derives substitution values from the notebook's own `CONFIG.md`; `--dry-run` supported. Fixes the gap where the only documented upgrade path (re-run `init.sh`) unconditionally overwrites the notebook `README.md` / `CLAUDE.md` and, with `--force`, the five state files. Flags — but does not perform — the judgement-call migrations (adding the fold line to the always-read files, moving a root-level `profile.md` to `mentors/`).
 
 ## [0.2.0] — 2026-09-08
 
