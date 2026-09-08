@@ -1,131 +1,123 @@
 # Architecture
 
-A one-page tour of how Trellis is put together. For the deeper version: [`core/FIRST_PRINCIPLES.md`](core/FIRST_PRINCIPLES.md). For the operating spec: [`core/PROTOCOLS.md`](core/PROTOCOLS.md).
+A one-page tour of how Trellis is put together. For the deeper version: [`core/FIRST_PRINCIPLES.md`](core/FIRST_PRINCIPLES.md). For the operating spec: [`core/PROTOCOLS.md`](core/PROTOCOLS.md). Trellis tracks a live reference notebook — see [`SYNC.md`](SYNC.md).
 
 ## The three layers
 
 ```
 LAYER 3 — Client
-  Claude Desktop / Claude Code / Copilot / ChatGPT / other
-  Drives the LLM, exposes tools, hosts the conversation.
+  Claude Cowork / Claude Code / any file-reading assistant
         │  reads / writes markdown
         ▼
 LAYER 2 — Notebook (your personal data, your private repo)
   CLAUDE.md          — entry point the client auto-loads
-  CONFIG.md          — your parameters
-  profile.md         — behavioral observations
+  CONFIG.md          — your parameters (rhythm, connector, PROTOCOL_MODE)
   framework/         — personalized copies of the layer-1 protocol docs
-  .claude/skills/    — WEEKLY_REVIEW + DOMAIN_SESSION (load verbatim on trigger)
+  .claude/skills/
+    ├── weekly-review/   SKILL.md (coordinator) + mentor_prompt.md (each mentor agent)
+    └── domain-session/  SKILL.md
   mentors/
-    ├── MEMORY.md            — lessons · facts · asks (the always-read trust layer)
-    ├── season_current.md    ┐
-    ├── coordinator_state.md │  coordinator state
+    ├── MEMORY.md            — rules · facts · never-repeat · asks  (fold file)
+    ├── profile.md           — behavioral profile                   (fold file)
+    ├── season_current.md    ┐                                       (fold file)
+    ├── coordinator_state.md │  coordinator state, incl. Team board  (fold file)
     ├── cross_domain.md      ┘
+    ├── profile_history/  coordinator_history/   — overflow
     └── <domain>/
+        ├── current_focus.md — Stance · Position · In progress …   (fold file)
         ├── curriculum.md    ┐
-        ├── current_focus.md │
-        ├── done_topics.md   │  per-domain notebook
-        ├── intel.md         │
+        ├── done_topics.md   │
+        ├── intel.md         │  per-domain notebook
         ├── log.md           │
         ├── sessions/        │
-        └── archive/         ┘
+        └── archive/         ┘  season_<N>.md · year_<YYYY>.md
         │  generated from
         ▼
 LAYER 1 — Framework (Trellis distribution, this repo)
   core/
     ├── FIRST_PRINCIPLES.md   — the constitution
-    ├── PROTOCOLS.md          — INTAKE + rare protocols + skill stubs
-    ├── MEMORY.md.template    — the always-read memory file (empty-seeded)
+    ├── PROTOCOLS.md          — INTAKE + rare protocols + FILE KINDS + skill stubs
+    ├── MEMORY.md.template    — the always-read memory file (empty-seeded, folded)
     ├── WIKI_BRIDGE.md        — optional knowledge-base hook
     └── *.template            — parameterized starter files
-  .claude/skills/            — weekly-review + domain-session (installed into the notebook)
+  .claude/skills/            — weekly-review (SKILL.md + mentor_prompt.md) + domain-session
   templates/domain/           — scaffold per new mentor
   examples/example_domain/    — worked example
   connectors/                 — adapter stubs
-  scripts/                    — init.sh, add-domain.sh, etc.
+  scripts/                    — init.sh, add-domain.sh, validate.sh, sync.sh
   docs/                       — guides per client / topic
+  SYNC.md                     — how this repo tracks the reference notebook
 ```
+
+## The fold
+
+Five files — `MEMORY.md`, `profile.md`, `coordinator_state.md`, `season_current.md`, every `<domain>/current_focus.md` — carry one line, `## ── HISTORY (on demand; agents do not read past this line) ──`. Current state lives above it (short entries, no dated sections); every story and superseded state lives below it, verbatim. Agents read to the fold (`sed -n '1,/^## ── HISTORY/p' <file>`) and fetch a story by ID only when a check fails. Each header states an above-the-fold budget; the weekly review's BUDGET CHECK measures the five top halves, and an overrun is fixed by moving content below the fold — never deleting (P6). That keeps the always-read set bounded as the notebook ages, with no database and nothing lost.
+
+| Kind | Files | Write operation | Readers take |
+|---|---|---|---|
+| **Ledgers** | `MEMORY.md` (RULES / FACTS / NEVER-REPEAT / ASKS), the laws in `profile.md`, `done_topics.md` | append a line; edit an entry in place by ID; retire = move below the fold | everything above the fold |
+| **Working memory** | `current_focus.md`, `coordinator_state.md`, `season_current.md`, `WEEK_BRIEFING.md` | replace the affected `## section` in place; the reason goes to `log.md` | everything above the fold |
+| **Logs** | `log.md`, `TRACKER.md`, `*_history/`, the dated sections below every fold | append only | the tail (last 2 log entries; the THIS WEEK block) |
 
 ## How a session flows (end-to-end)
 
 ```
 1. User → Client     "let's do a session on writing"
-2. Client → LLM      sends instructions + the user's message
+2. Client → LLM      CLAUDE.md + the message; DOMAIN_SESSION skill loads
 3. LLM (mentor)
-   a. reads CONFIG.md                          (who, where, params)
-   b. reads framework/PROTOCOLS.md             (the spec)
-   c. identifies trigger: DOMAIN_SESSION on `writing`
-   d. PREPARE:
-      - reads mentors/MEMORY.md                (lessons · facts · asks)
-      - reads mentors/writing/done_topics.md   (never reassign work)
-      - reads mentors/writing/current_focus.md (where we left off)
-      - reads mentors/writing/curriculum.md    (where we're going)
-      - reads mentors/writing/log.md (current phase slice only)
-      - reads mentors/writing/intel.md         (external knowledge)
-      - reads profile.md                       (who the user is)
-   e. COACH:
-      - conversation with user
-      - applies critical-thinking pass before recommending anything
-   f. JOURNAL (at session end):
-      - writes mentors/writing/sessions/<date>.md
-      - appends to log.md
-      - appends to done_topics.md
-      - updates current_focus.md
-      - optionally edits curriculum.md if it adapted
-      - writes any correction / fact / ask back to mentors/MEMORY.md
-4. LLM → Client → User    confirms the writes, ends session
+   d. PREPARE (all fold files read above the fold only):
+      - mentors/writing/done_topics.md         (never reassign work)
+      - mentors/MEMORY.md                      (rules · facts · never-repeat · asks)
+      - mentors/profile.md, season_current.md
+      - mentors/writing/current_focus.md       (adopt the Stance; Position → section)
+      - mentors/writing/curriculum.md          (the named section + lookahead)
+      - mentors/writing/log.md                 (last 2 entries)
+      - mentors/writing/intel.md               (in full, every session)
+   e. COACH: conversation; inline critical thinking; ~70% edge
+   f. JOURNAL: sessions/<date>.md · log.md line · done_topics row ·
+      current_focus sections replaced in place · MEMORY.md write-back ·
+      budget check (current_focus ≤ 5 KB above the fold) · optional commit
 ```
 
 ## How a weekly review flows
 
 ```
-1. User → "weekly review"
-2. Coordinator (LLM)
-   Phase 1: gather signals
-     - reads connectors (if configured) for completion data + comments
-     - reads each active domain's log/focus
-     - reads coordinator_state.md, cross_domain.md, profile.md
-     - reads mentors/MEMORY.md (lessons · facts · asks; increments ask ages)
-     - synthesizes WEEK_BRIEF
-   ⏸ Checkpoint 1: user confirms the brief
-   Phase 2: spawn parallel mentor agents
-     - one Task per active domain (real parallelism)
-     - each mentor reads MEMORY.md first, then its own folder + WEEK_BRIEF
-     - each runs the critical-thinking pass + emits PREFLIGHT + THREE_MOVES
-     - each returns a structured report
-   Phase 3: synthesize
-     - resolve cross-domain conflicts
-     - escalate any aged ask (MEMORY.md → ASKS)
-     - update coordinator_state.md (high-stakes register, watches, etc.)
-     - run the self-verification pass on the plan before you see it
-   ⏸ Checkpoint 2: user approves the plan
-   Phase 4: write outputs
-     - per-domain: update current_focus.md, log.md if a journal happened
-     - update coordinator_state.md (Phase 3 step 3.5)
-     - update cross_domain.md if anything new emerged
-     - write MEMORY.md back (new lessons, facts, ask ages / closures)
-   Phase 5: present
-     - brief summary + per-domain next-week plan
+Phase 1  GATHER (coordinator, no agents)
+  connector: due/completed 7d → comments → overdue · TRACKER THIS WEEK block ·
+  files touched in 7 days · MEMORY above the fold (ask ages +1) ·
+  profile / season / coordinator_state above the fold (Team board) → WEEK_BRIEF
+⏸ Checkpoint 1 — signal brief (AskUserQuestion; skipped in PROTOCOL_MODE=automated)
+Phase 2  PARALLEL MENTORS — one Agent per active domain, a 3-line call:
+  "read mentor_prompt.md, here is the WEEK_BRIEF" → each reads MEMORY first,
+  intel in full, its own slices → PREFLIGHT · THREE_MOVES · VALUE_CHECK ·
+  TEAM_LINE · FOCUS_UPDATE · NEW_LESSON/NEW_FACT · LOG_ENTRY
+Phase 3  SYNTHESIS — time/slot/cross-domain; ASKS escalation (Age ≥ 3 = challenge);
+  coordinator_state rewritten in place (Team board) → VERIFIER: a fresh-context
+  Agent that did not write the plan returns SELF-CHECK; every defect fixed first
+⏸ Checkpoint 2 — plan + Self-check (count the user's corrections)
+Phase 4  WRITES by file kind — connector + WEEK_BRIEFING · log.md (append) ·
+  done_topics · current_focus (FOCUS_UPDATE) · DRIFT_CHECK · MEMORY.md (by ID) ·
+  TRACKER · season_current · curriculum · profile.md (below fold; promote ≥ 2 wk)
+  → CORRECTION COUNT (CP2 corrections: N · verifier caught: M) → BUDGET CHECK
+Phase 5  PRESENT — phone-readable; value is the headline, not completion
 ```
 
 ## The pyramid (P8)
 
-Higher layers are mentor-compressed from lower; never parallel-written:
+Higher layers are mentor-compressed from lower; never parallel-written.
 
 ```
 sessions/<date>.md        ← full prose, one per session
         ↓
-log.md                    ← one line per session
+log.md                    ← one line per session; readers take the last 2
         ↓
-archive/phase_<N>.md      ← one synthesis per phase
+archive/season_<N>.md     ← one synthesis per season (from log.md)
         ↓
-archive/season_<N>.md     ← one synthesis per season
-        ↓
-archive/year_<YYYY>.md    ← one year-in-review
+archive/year_<YYYY>.md    ← one year-in-review (from the season archives)
 ```
 
-This is what keeps per-session read cost bounded as the system ages.
+With the fold, this bounds per-session read cost as the system ages: a mentor reads the log tail, the named curriculum section, and everything above five folds — never the whole notebook.
 
 ## Architecture diagram
 
-A React component version of the above lives at [`docs/diagrams/mentor_architecture_diagram.jsx`](docs/diagrams/mentor_architecture_diagram.jsx) — drop into any React app to render it interactively.
+A React component version lives at [`docs/diagrams/mentor_architecture_diagram.jsx`](docs/diagrams/mentor_architecture_diagram.jsx).

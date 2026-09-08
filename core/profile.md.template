@@ -1,7 +1,8 @@
 # {{USER_NAME}} — Behavioral Profile
 
-*Permanent doc. Read by every mentor at session start. Updated by mentors when they observe new patterns (Coordinator at weekly review, Domain Mentors after sessions when they spot something specific to the user).*
+*Permanent doc. Read by every mentor at session start — above the fold only. Updated by mentors when they observe new patterns (Coordinator at weekly review, Domain Mentors after sessions when they spot something specific to the user).*
 *Owned by: this file. Referenced by: every PROTOCOL.*
+*Budget (above the fold): ≤ 30 KB. Read up to the HISTORY fold only: `sed -n '1,/^## ── HISTORY/p' mentors/profile.md`. Write rule: a behavioral pattern enters the sections above the fold only after holding ≥ 2 weeks, as one line with a first-observed tag, edited in place; the weekly dated observations are appended BELOW the fold; never add a dated section above the fold. Fold reorganization: <date of last compaction>.*
 
 > **Bootstrap note**: This file starts mostly empty — that's correct. Don't fill it in yourself with questionnaire answers; that's the LMS anti-pattern (FIRST_PRINCIPLES P7). It fills in two ways:
 > 1. **At INTAKE (your first session)** the mentor interviews you and writes down the *facts you already know* — Identity, Time Reality, External Teachers, and a *starting* read on communication/accountability.
@@ -65,7 +66,11 @@
 
 ## Calibration Log
 
-*Mentors append here at session end when they had to recalibrate difficulty up or down. Lets the next mentor (in any domain) see whether the trend is "everything too easy", "everything too hard", or "calibration is right but specific X is off". Keep this short — last ~30 entries; rotate older to `archive/<year>.md` if it grows.*
+*Mentors append here at session end when they had to recalibrate difficulty up or down. Lets the next mentor (in any domain) see whether the trend is "everything too easy", "everything too hard", or "calibration is right but specific X is off". Keep the table above the fold short — the durable takeaways and the last ~10 entries; older rows go below the fold, and rows older than a year rotate to `mentors/profile_history/<YYYY>.md` (PROTOCOLS → WEEKLY_REVIEW profile rotation).*
 
 | Date | Domain | Direction | What changed | Reason |
 |---|---|---|---|---|
+
+## ── HISTORY (on demand; agents do not read past this line) ──
+
+*Dated weekly observations are appended here, oldest first.*

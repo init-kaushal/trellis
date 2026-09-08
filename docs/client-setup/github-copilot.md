@@ -54,7 +54,7 @@ Copilot in recent VS Code versions supports MCP servers. Configure them in your 
 ## Caveats
 
 - Copilot's chat history per file is more ephemeral than Claude Desktop / Code. The protocols' insistence on writing journal artifacts to disk every session is doubly important here — without it, you lose continuity.
-- If you have a long weekly review, consider asking Copilot to write intermediate state (Phase 1 brief, Phase 2 mentor reports) into a scratch file in `coordinator_history/` so you don't lose it if the chat resets.
+- If you have a long weekly review, consider asking Copilot to write intermediate state (Phase 1 brief, Phase 2 mentor reports) into a scratch file in `mentors/coordinator_history/` so you don't lose it if the chat resets.
 
 ## Recommended models
 

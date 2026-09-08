@@ -138,7 +138,7 @@ def write_brief(notebook, workspace, name, mentors, signals, time_label, review_
 **Signals to connect**
 {s_lines}
 
-**What to do:** Read `framework/PROTOCOLS.md`. Run Part A (know the person) once \u2192 write `profile.md` and confirm the rhythm above. Then run Part B for EACH mentor above, asking that domain's own expert questions; seed `done_topics.md` from what the user has already done; end each with one real piece of work and the user's sign-off. Talk to the user \u2014 don't fill in forms."""
+**What to do:** Read `framework/PROTOCOLS.md`. Run Part A (know the person) once \u2192 write `mentors/profile.md` and confirm the rhythm above. Then run Part B for EACH mentor above, asking that domain's own expert questions; seed `done_topics.md` from what the user has already done; end each with one real piece of work and the user's sign-off. Talk to the user \u2014 don't fill in forms."""
 
     claude_md = os.path.join(notebook, "CLAUDE.md")
     start, end = "<!-- SETUP_BRIEF_START -->", "<!-- SETUP_BRIEF_END -->"

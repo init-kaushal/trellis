@@ -29,12 +29,12 @@ Every protocol in the system is a specialization of four basic operations:
 
 | Operation | When | What |
 |---|---|---|
-| **PREPARE** | Before a session | Read done_topics, current_focus, curriculum, log. Most importantly: don't propose work that's already done. |
+| **PREPARE** | Before a session | Read MEMORY, done_topics, current_focus, the named curriculum section, the log tail, intel — fold files above the fold only. Most importantly: don't propose work that's already done. |
 | **COACH** | During | Have the conversation. Push back when warranted. Calibrate difficulty. |
 | **JOURNAL** | After | Write the session page. Update the catalog. Update the focus sheet. Edit the curriculum if it shifted. |
 | **AUDIT** | Periodically | Re-read the folder for drift, contradictions, stale claims. Happens inside the weekly review. |
 
-Named protocols in `core/PROTOCOLS.md` (INTAKE, DOMAIN_SESSION, WEEKLY_REVIEW, MENTOR_REFRESH, SEASON_TRANSITION, DRIFT_CHECK) are these four operations specialized to different cadences and scopes. The two high-frequency ones (DOMAIN_SESSION, WEEKLY_REVIEW) load their full steps from `.claude/skills/`.
+Named protocols in `core/PROTOCOLS.md` (INTAKE, DOMAIN_SESSION, WEEKLY_REVIEW, MENTOR_REFRESH, SEASON_TRANSITION, DRIFT_CHECK) are these four operations specialized to different cadences and scopes. The two high-frequency ones (DOMAIN_SESSION, WEEKLY_REVIEW) load their full steps from `.claude/skills/`; the weekly review's mentor agents load only `.claude/skills/weekly-review/mentor_prompt.md`.
 
 ---
 
@@ -45,10 +45,8 @@ One canonical layer per granularity. Higher layers are mentor-compressed from lo
 ```
 sessions/<date>.md        ← session granularity     (full prose)
         ↓ mentor compresses at session end
-log.md                    ← chronological index     (one line per session)
-        ↓ mentor summarizes at phase boundary
-archive/phase_<N>.md      ← phase synthesis
-        ↓ mentor summarizes at season boundary
+log.md                    ← chronological index     (one line per session; readers take the last 2)
+        ↓ mentor summarizes at season boundary, from log.md
 archive/season_<N>.md     ← season synthesis
         ↓ mentor summarizes at year boundary
 archive/year_<YYYY>.md    ← year-in-review
@@ -58,11 +56,13 @@ Aside (state, not history — bounded by construction):
 
 ```
 done_topics.md     ← topic-granularity catalog (the "don't repeat work" rule)
-current_focus.md   ← week/phase working memory
-curriculum.md      ← the concept layer (phases, milestones)
+current_focus.md   ← working memory: Stance · Position · In progress · Next planned (above the fold, ≤ 5 KB)
+curriculum.md      ← the concept layer (sections, milestones)
 ```
 
-The pyramid is why per-session read cost stays bounded as the system ages. The mentor doesn't re-read three years of sessions to prepare; it reads the current phase + the previous phase archive, that's it.
+The pyramid is why per-session read cost stays bounded as the system ages. The mentor doesn't re-read three years of sessions to prepare; it reads the last two log entries, the curriculum section its focus sheet names, and everything above the fold — that's it.
+
+**The fold.** Five files (`MEMORY.md`, `profile.md`, `season_current.md`, `coordinator_state.md`, each `current_focus.md`) carry the line `## ── HISTORY (on demand; agents do not read past this line) ──`. Current state lives above it; every story and superseded state lives below it, verbatim. Agents read to the fold; each file's header states its above-the-fold budget, and the weekly review measures it. Over budget means *move below the fold*, never delete. Three file kinds follow from this: ledgers (edit by ID, retire below the fold), working memory (replace a section in place), logs (append; readers take the tail) — see `core/PROTOCOLS.md → FILE KINDS`.
 
 ---
 
@@ -72,7 +72,7 @@ The pyramid is why per-session read cost stays bounded as the system ages. The m
 |---|---|---|
 | **Scope** | Across all active domains | One domain only |
 | **Triggered by** | "weekly review", "season review" | "let's do a session on X" |
-| **Reads** | All domain summaries, profile.md, coordinator_state.md | Just its own domain folder + profile.md |
+| **Reads** | Mentor reports, MEMORY.md, profile.md, coordinator_state.md (above the fold) | MEMORY.md + its own domain folder + profile.md (above the fold) |
 | **Writes** | Synthesis across domains, next-week plan, coordinator_state.md | Its own domain's session page, log, catalog, focus |
 | **Authority** | Trade-offs *between* domains | Calibration *within* its domain |
 
@@ -90,21 +90,21 @@ A naïve LLM agrees with whatever you said last. The protocols include explicit 
 
 If 2+ of these flags fire, the mentor escalates the question to you at the next checkpoint rather than silently changing course. This is the system's main defense against "I just want to be told yes".
 
-See `.claude/skills/weekly-review/SKILL.md` → Phase 2 step 7 for the full spec.
+See `.claude/skills/weekly-review/mentor_prompt.md` → step 7 for the full spec.
 
 ---
 
 ## Memory: how the system learns
 
-A naïve assistant forgets your corrections the moment the thread ends. Trellis puts them in a single always-read file, `mentors/MEMORY.md`, with three sections — and every mentor reads it *before* it drafts:
+A naïve assistant forgets your corrections the moment the thread ends. Trellis puts them in a single always-read file, `mentors/MEMORY.md`, with four short sections above the fold (the full stories sit below it) — and every mentor reads it *before* it drafts:
 
-- **LESSONS** — every correction you give becomes a one-line pre-flight RULE. Because mentors answer these rules (pass/fail) in a PREFLIGHT block before proposing anything, a correction you give in week N provably changes behaviour in week N+1. If a lesson is violated twice, the fix must become structural, not another reminder.
-- **FACTS** — the load-bearing facts you've stated (plus a Never-Repeat list of things you've declined). A plan that contradicts a fact is wrong by definition. It's a *pointer* layer — each fact names its home file — so it doesn't create drift; the weekly DRIFT_CHECK reconciles it.
+- **RULES** — every correction you give becomes a 3–4-line pre-flight rule with a `✓` question and a violation count. Because mentors answer these rules (pass/fail) in a PREFLIGHT block before proposing anything, a correction you give in week N provably changes behaviour in week N+1. If a rule is violated twice, the fix must become structural, not another reminder.
+- **FACTS** and **NEVER-REPEAT** — the load-bearing facts you've stated, and the things you've declined. A plan that contradicts a row is wrong by definition. FACTS is a *pointer* layer — each row names its home file — so it doesn't create drift; the weekly DRIFT_CHECK reconciles it.
 - **ASKS** — a ledger of open requests with a mechanical, age-based escalation: an ask unmet for 2 reviews escalates to a named owner; unmet for 3, it becomes a challenge you *must* see. No urgent ask can quietly rot for weeks.
 
 This is the difference between a system that keeps a diary of its mistakes and one that actually reads them back — and it's the minimum trust layer for a second user: when you correct it, it stays corrected.
 
-Two supporting mechanisms in the weekly review reinforce it: a **THREE_MOVES** step forces each mentor to produce a non-obvious move (not a checklist), and a **self-verification pass** checks the plan against FACTS / Never-Repeat / locked slots / done-work *before* you see it — so the system catches its own errors instead of you catching them after.
+Three supporting mechanisms in the weekly review reinforce it: a **THREE_MOVES** step forces each mentor to produce a non-obvious move (not a checklist); a **fresh-context verifier** — an agent that did not write the plan — checks it against FACTS / NEVER-REPEAT / locked slots / done work / progressive overload *before* you see it, so the system catches its own errors instead of you catching them after; and a **correction count** records, every week, how many mentor errors you still had to fix at plan approval and how many the verifier caught first.
 
 ---
 
@@ -117,8 +117,8 @@ Without seasons, the system sprawls — every new interest accretes, nothing eve
 At season end, the **SEASON_TRANSITION** protocol:
 
 1. Per-domain: marks each exit criterion Met / Partially Met / Not Met with one-line reasoning.
-2. Archives the season's work into `archive/season_<N>_<period>.md`.
-3. Optionally rotates state in `profile.md` if persistent patterns shifted.
+2. Archives the season's work into `archive/season_<N>_<period>.md`, synthesized from the season's `log.md` entries.
+3. Rotates `profile.md` and `MEMORY.md`: resolved patterns, absorbed rules and dead facts move below the fold (never deleted).
 4. Designs the next season: which domains are Active / Seeding / Silent, what each one is for, what its exit criterion is.
 
 ---

@@ -139,7 +139,7 @@ const MentorCluster = () => {
       </div>
       <Divider color={P.mentor} label="each agent reads" />
       <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-        {["curriculum.md", "log.md", "intel.md", "prateek.md"].map(f => (
+        {["curriculum.md", "log.md", "intel.md", "profile.md"].map(f => (
           <span key={f} style={{
             background: `${P.domain}15`, border: `1px solid ${P.domain}33`,
             color: P.sub, fontSize: 8, padding: "1px 6px", borderRadius: 4,
@@ -233,7 +233,7 @@ export default function App() {
             Life Mentor System — Architecture
           </div>
           <div style={{ fontSize: 11, color: P.sub, marginTop: 4 }}>
-            11-domain multi-agent weekly review · Todoist as primary signal ·
+            multi-domain multi-agent weekly review · task connector as primary signal ·
             2 human checkpoints · Apr 2026
           </div>
         </div>
@@ -252,8 +252,8 @@ export default function App() {
               Weekly Review Pipeline — triggered by "weekly review"
             </div>
 
-            {/* PRATEEK */}
-            <FlowBox icon="👤" title="Prateek" color={P.user}
+            {/* THE USER */}
+            <FlowBox icon="👤" title="The user" color={P.user}
               subtitle='Says "weekly review" · responds at 2 checkpoints · everything else is autonomous' />
 
             <Arrow color={P.user} />
@@ -263,9 +263,9 @@ export default function App() {
               subtitle="No agents yet. Coordinator reads all sources and builds the WEEK_BRIEF.">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
                 {[
-                  { icon: "📋", label: "Todoist", sub: "3-layer: tasks + comments (verbatim) + overdue", color: P.signal },
+                  { icon: "📋", label: "Task connector", sub: "3-layer: tasks + comments (verbatim) + overdue", color: P.signal },
                   { icon: "📄", label: "TRACKER.md", sub: "cross-reference fallback", color: P.user },
-                  { icon: "🧠", label: "prateek.md", sub: "behavioral profile + energy patterns", color: P.orch },
+                  { icon: "🧠", label: "profile.md", sub: "behavioral profile + energy patterns", color: P.orch },
                   { icon: "🌐", label: "auto-memory", sub: "wide net — cross-session signals", color: P.memory },
                   { icon: "📅", label: "season_current.md", sub: "domain states, locked slots", color: P.orch },
                   { icon: "🔗", label: "cross_domain.md", sub: "scheduling constraints, synergies", color: P.orch },
@@ -295,7 +295,7 @@ export default function App() {
             {/* CHECKPOINT 1 */}
             <CheckpointBox n={1}
               title="Checkpoint 1 — Signal brief"
-              detail="Coordinator presents: completion table with Prateek's verbatim comments, behavioural inferences, energy split, data quality flag. Prateek confirms or adds context. Mentors don't run until this is cleared." />
+              detail="Coordinator presents: completion table with the user's verbatim comments, behavioural inferences, energy split, data quality flag. The user confirms or adds context. Mentors don't run until this is cleared." />
 
             <Arrow color={P.cp} />
 
@@ -327,7 +327,7 @@ export default function App() {
             {/* CHECKPOINT 2 */}
             <CheckpointBox n={2}
               title="Checkpoint 2 — Plan approval"
-              detail="Coordinator presents: Mon–Sun plan exactly as it will appear in Todoist, mentor concerns, one thing to protect, one thing to watch. Prateek approves or requests changes. One round only. Nothing is written until cleared." />
+              detail="Coordinator presents: Mon–Sun plan exactly as it will appear in the task connector, mentor concerns, one thing to protect, one thing to watch. The user approves or requests changes. One round only. Nothing is written until cleared." />
 
             <Arrow color={P.cp} />
 
@@ -336,11 +336,11 @@ export default function App() {
               subtitle="All writes happen after Checkpoint 2 is cleared. Simultaneous where possible.">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4, marginTop: 4 }}>
                 {[
-                  { label: "Todoist", sub: "next week tasks with due dates", color: P.signal },
+                  { label: "Task connector", sub: "next week tasks with due dates", color: P.signal },
                   { label: "domain log.md ×N", sub: "append LOG_ENTRY verbatim", color: P.domain },
                   { label: "TRACKER.md", sub: "next week plan + completions para", color: P.user },
                   { label: "season_current.md", sub: "disruptions + track status", color: P.orch },
-                  { label: "prateek.md", sub: "synthesise: auto-memory + mentors + execution", color: P.orch },
+                  { label: "profile.md", sub: "synthesise: auto-memory + mentors + execution", color: P.orch },
                 ].map(w => (
                   <div key={w.label} style={{
                     background: `${w.color}0c`, border: `1px solid ${w.color}30`,
@@ -356,7 +356,7 @@ export default function App() {
             <Arrow color={P.output} />
 
             {/* PHASE 5 */}
-            <FlowBox icon="✅" title="Phase 5 — Present to Prateek" color={P.green}
+            <FlowBox icon="✅" title="Phase 5 — Present to the user" color={P.green}
               subtitle="Clean phone-readable summary. No file paths. No implementation details.">
               <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 4 }}>
                 {["Domain snapshot table", "Next week plan (Mon–Sun)", "One thing to protect",
@@ -378,7 +378,7 @@ export default function App() {
             </div>
 
             <FileLayer title="Live Signal" color={P.signal} files={[
-              { name: "Todoist", sub: "tasks · comments · overdue", read: true, write: true },
+              { name: "Task connector", sub: "tasks · comments · overdue", read: true, write: true },
             ]} />
 
             <FileLayer title="Cross-session" color={P.memory} files={[
@@ -392,13 +392,13 @@ export default function App() {
 
             <FileLayer title="Orchestration (permanent)" color={P.orch} files={[
               { name: "PROTOCOLS.md", sub: "canonical protocols", read: true },
-              { name: "prateek.md", sub: "behavioral profile", read: true, write: true },
+              { name: "profile.md", sub: "behavioral profile", read: true, write: true },
               { name: "season_current.md", sub: "live season state", read: true, write: true },
               { name: "cross_domain.md", sub: "synergies + constraints", read: true },
               { name: "WIKI_BRIDGE.md", sub: "wiki protocol", read: true },
             ]} />
 
-            <FileLayer title="Domain ×11" color={P.domain} files={[
+            <FileLayer title="Domain ×N" color={P.domain} files={[
               { name: "curriculum.md", sub: "expert plan", read: true, write: true },
               { name: "log.md", sub: "session history", read: true, write: true },
               { name: "intel.md", sub: "↑ written by Sat task", read: true },
@@ -410,7 +410,7 @@ export default function App() {
 
             <FileLayer title="Planning (frozen)" color={P.file} files={[
               { name: "Season1_90Day_Plan.md", sub: "charter — read only", read: true, flag: "FROZEN" },
-              { name: "Prateek_Life_Plan.md", sub: "20yr vision", read: true },
+              { name: "life plan", sub: "long-range vision", read: true },
             ]} />
 
             {/* scheduled tasks */}
@@ -429,7 +429,7 @@ export default function App() {
                 </div>
               </div>
               <div style={{ fontSize: 9 }}>
-                <span style={{ color: P.file, fontWeight: 700 }}>prateek-weekly-review</span>
+                <span style={{ color: P.file, fontWeight: 700 }}>weekly-review</span>
                 <span style={{ color: P.sub }}> · was Sun 6pm</span>
                 <Tag label="DISABLED" color={P.file} />
                 <div style={{ color: P.sub, fontSize: 8, marginTop: 2, paddingLeft: 8 }}>
@@ -464,7 +464,7 @@ export default function App() {
                 </div>
                 <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: P.user, flexShrink: 0 }} />
-                  <span><span style={{ color: P.user }}>Prateek</span> enters at 2 fixed points only.
+                  <span><span style={{ color: P.user }}>The user</span> enters at 2 fixed points only.
                   All else is autonomous.</span>
                 </div>
               </div>

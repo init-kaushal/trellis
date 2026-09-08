@@ -1,21 +1,17 @@
 # <domain> — log
 
-> **Chronological index** of session pages. One line per session, referencing the full session narrative in `sessions/<date>.md`.
+> **Chronological record** — Layer 0, the canonical history of this domain at session/week granularity. One dated entry per DOMAIN_SESSION (written at JOURNAL) and per WEEKLY_REVIEW (the mentor's LOG_ENTRY), always appended at the end. Long-form narrative that outgrows an entry goes in `sessions/<date>.md`; the entry points to it.
 >
-> Mentor appends one line at the end of every DOMAIN_SESSION (JOURNAL step 11b). For free-form prose narrative, write the `sessions/<date>.md` page; this file is the table of contents, not the place for detail.
->
-> Suggested line format (flexible — readability matters more than parseability):
+> **Format.** Readers take the **last 2 dated entries** (that plus `current_focus.md` above the fold is the whole recent picture), so **every entry starts with a dated `###` header**:
 >
 > ```
-> ## [YYYY-MM-DD] session | <topic> · sessions/YYYY-MM-DD.md
-> _(optional one-line note: calibration flag, critical-thinking exchange summary, etc.)_
+> ### YYYY-MM-DD | <session · weekly review> — <topic or one-line headline>
+> <3–10 lines: what happened, difficulty (N/10), what changed in current_focus.md and why,
+>  calibration flag if any · optional pointer: sessions/YYYY-MM-DD.md>
 > ```
 >
-> Weekly summaries from WEEKLY_REVIEW may also be appended here as ## [YYYY-MM-DD] weekly review entries.
->
-> **Phase headers**: when the mentor advances `current_focus.md`'s Phase field, append a `## Phase <N>: <name>` divider line above the first session of the new phase. This is what lets future PREPARE steps cheaply read only "log.md from the start of the current phase forward".
+> Never edit an old entry — append a new one. The *reason* for any change to `current_focus.md` is written here, never as a dated paragraph in `current_focus.md`. This file is never rotated: at season end the season archive (`archive/season_<N>_<period>.md`) indexes its entries.
 
 ---
 
-<!-- ## Phase 1: <name> -->
-<!-- first session line goes here once the domain begins -->
+<!-- first dated entry goes here once the domain begins -->

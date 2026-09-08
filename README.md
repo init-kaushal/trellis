@@ -28,20 +28,25 @@ Trellis fixes all four with a single idea: **the mentor keeps the notebook, not 
 Trellis/
 ├── core/                   # The protocol layer — operating manual for the mentor team
 │   ├── FIRST_PRINCIPLES.md     # The constitution. 9 principles. Read first.
-│   ├── PROTOCOLS.md            # INTAKE, the rare protocols, and stubs for the two skills
-│   ├── MEMORY.md.template      # The always-read memory file: lessons · facts · asks
+│   ├── PROTOCOLS.md            # INTAKE, the rare protocols, FILE KINDS, and stubs for the two skills
+│   ├── MEMORY.md.template      # The always-read memory file: rules · facts · never-repeat · asks
 │   ├── WIKI_BRIDGE.md          # How mentors interact with an external knowledge base
 │   └── *.template              # Parameterized starter docs (profile, season, coordinator)
-├── .claude/skills/          # WEEKLY_REVIEW + DOMAIN_SESSION — load verbatim on trigger
+├── .claude/skills/          # WEEKLY_REVIEW (SKILL.md + mentor_prompt.md) + DOMAIN_SESSION — load verbatim on trigger
 ├── onboarding/              # The visual setup wizard (single-file HTML)
 ├── templates/domain/       # Scaffold for a new domain mentor — copied per domain
 ├── examples/example_domain/    # One fully-populated worked example to learn from
 ├── connectors/             # Adapter stubs: Todoist, Calendar, Slack (you wire them up)
-├── scripts/                # start.sh (the one command), init.sh (scaffold), add-domain.sh, validate.sh
-└── docs/                   # Quickstart, concept guide, client-specific setup notes
+├── scripts/                # start.sh (the one command), init.sh (scaffold), add-domain.sh, validate.sh, sync.sh
+├── docs/                   # Quickstart, concept guide, client-specific setup notes
+└── SYNC.md                 # How this repo tracks the live reference notebook
 ```
 
 Run `./scripts/start.sh` and a visual wizard walks you through setup; your **personal notebook** is created alongside the framework. You commit it to your own private repo, and keep pulling framework updates upstream without your personal content leaking.
+
+**Bounded by construction.** The five always-read files (`MEMORY.md`, `profile.md`, `season_current.md`, `coordinator_state.md`, each mentor's `current_focus.md`) carry a **fold** line: what is current sits above it, every story and superseded state sits below it, and agents read only to the fold — so the read cost of a three-year-old notebook is the same as a three-week-old one, and nothing is ever deleted to keep it that way. The weekly review adds two honesty mechanisms on top: a **fresh-context verifier** (an agent that did not write the plan checks it against your facts, declined items, locked slots and done work before you see it), and a **correction count** — the number of mentor errors you had to fix at plan approval is written down every week, so "is the system getting better?" is a number, not a feeling.
+
+Trellis tracks a live reference notebook; enhancements land there first and are ported here — see [SYNC.md](SYNC.md).
 
 ---
 
@@ -74,7 +79,7 @@ Every step, no assumptions: **[docs/quickstart.md](docs/quickstart.md)**. (Prefe
 
 ## How it works (one paragraph)
 
-You onboard through a **visual wizard** (`./scripts/start.sh`) — name your notebook, pick your mentors, set your rhythm; it scaffolds your notebook and a folder per mentor. You connect that folder to **Claude Cowork** and say *"start my intake."* Then comes the one-time **intake**: each mentor runs its own first conversation — gets to know you, asks the questions an expert in *that* domain would, co-designs the goals, and does a first piece of real work — so day one delivers value instead of a folder of empty templates. After that, each domain (fitness, music, a side project, parenting) gets a folder of plain markdown files: a curriculum, a catalog of done topics, a focus sheet, a session journal, an optional intel page. The LLM acting as that domain's mentor reads these before every session — most importantly the **done topics** so it never reassigns finished work, and a small always-read **memory file** of your past corrections and stated facts so it doesn't repeat old mistakes. The mentor coaches the conversation, then writes a session page, updates the catalog, edits the focus sheet, and trims the log. A **coordinator** runs a weekly review across all domains: pulls signals from your task tracker if connected, spawns one mentor agent per active domain in parallel, synthesizes their reports, pauses for your input twice (signal check, plan check), then writes the next week's plan. A **season** is a 90-day arc with explicit exit criteria — at season end, archives roll up, and you design the next one.
+You onboard through a **visual wizard** (`./scripts/start.sh`) — name your notebook, pick your mentors, set your rhythm; it scaffolds your notebook and a folder per mentor. You connect that folder to **Claude Cowork** and say *"start my intake."* Then comes the one-time **intake**: each mentor runs its own first conversation — gets to know you, asks the questions an expert in *that* domain would, co-designs the goals, and does a first piece of real work — so day one delivers value instead of a folder of empty templates. After that, each domain (fitness, music, a side project, parenting) gets a folder of plain markdown files: a curriculum, a catalog of done topics, a focus sheet, a session journal, an optional intel page. The LLM acting as that domain's mentor reads these before every session — most importantly the **done topics** so it never reassigns finished work, and a small always-read **memory file** of your past corrections and stated facts so it doesn't repeat old mistakes. The mentor coaches the conversation, then writes a session page, updates the catalog, edits the focus sheet, and trims the log. A **coordinator** runs a weekly review across all domains: pulls signals from your task tracker if connected, spawns one mentor agent per active domain in parallel, synthesizes their reports, has a fresh-context verifier check the plan, pauses for your input twice (signal check, plan check), then writes the next week's plan. A **season** is a 90-day arc with explicit exit criteria — at season end, archives roll up, and you design the next one.
 
 The full architecture: [core/FIRST_PRINCIPLES.md](core/FIRST_PRINCIPLES.md). The full operating manual: [core/PROTOCOLS.md](core/PROTOCOLS.md).
 

@@ -156,7 +156,8 @@ fi
 say ""
 
 # --- create notebook tree ---------------------------------------------------
-mkdir -p "$NOTEBOOK_ROOT"/{mentors,coordinator_history}
+mkdir -p "$NOTEBOOK_ROOT"/mentors/{coordinator_history,profile_history}
+touch "$NOTEBOOK_ROOT"/mentors/{coordinator_history,profile_history}/.gitkeep
 mkdir -p "$NOTEBOOK_ROOT"/.trellis
 
 # --- substitution helper ----------------------------------------------------
@@ -177,9 +178,11 @@ printf -- "- (none configured — see connectors/connectors.example.yml to wire 
   > "$SUBST_TMP/connector_list.txt"
 
 substitute() {
-  # substitute <src> <dest>
-  local src="$1" dest="$2"
-  if [[ -f "$dest" && $FORCE -eq 0 ]]; then
+  # substitute <src> <dest> [always]
+  # "always" overwrites even without --force — for framework-owned copies (the
+  # skills) that must refresh on every run, like framework/ does.
+  local src="$1" dest="$2" mode="${3:-}"
+  if [[ -f "$dest" && $FORCE -eq 0 && "$mode" != "always" ]]; then
     warn "exists, skipping (use --force): ${dest#$NOTEBOOK_ROOT/}"
     return
   fi
@@ -233,21 +236,22 @@ done
 # --- skills: the two high-frequency procedures, installed into the notebook -
 # WEEKLY_REVIEW and DOMAIN_SESSION live as skills so their full text loads
 # verbatim on trigger instead of depending on the whole manual being read.
-# Claude auto-discovers skills under .claude/skills/. Refreshed every run.
+# Claude auto-discovers skills under .claude/skills/. EVERY file in each skill
+# directory ships (SKILL.md plus its companions, e.g. weekly-review/
+# mentor_prompt.md), each run through `substitute`. Refreshed every run.
 for skill in weekly-review domain-session; do
-  if [[ -f "$FRAMEWORK_ROOT/.claude/skills/$skill/SKILL.md" ]]; then
-    mkdir -p "$NOTEBOOK_ROOT/.claude/skills/$skill"
-    sed \
-      -e "s|{{USER_NAME}}|$USER_NAME|g" \
-      -e "s|{{WORKSPACE_NAME}}|$WORKSPACE_NAME|g" \
-      "$FRAMEWORK_ROOT/.claude/skills/$skill/SKILL.md" > "$NOTEBOOK_ROOT/.claude/skills/$skill/SKILL.md"
-    ok "wrote .claude/skills/$skill/SKILL.md"
-  fi
+  skill_src="$FRAMEWORK_ROOT/.claude/skills/$skill"
+  [[ -d "$skill_src" ]] || continue
+  while IFS= read -r -d '' src; do
+    rel="${src#$skill_src/}"
+    mkdir -p "$(dirname "$NOTEBOOK_ROOT/.claude/skills/$skill/$rel")"
+    substitute "$src" "$NOTEBOOK_ROOT/.claude/skills/$skill/$rel" always
+  done < <(find "$skill_src" -type f -print0)
 done
 
 # --- personalized top-level files -----------------------------------------
 substitute "$FRAMEWORK_ROOT/core/CONFIG.md.template"            "$NOTEBOOK_ROOT/CONFIG.md"
-substitute "$FRAMEWORK_ROOT/core/profile.md.template"           "$NOTEBOOK_ROOT/profile.md"
+substitute "$FRAMEWORK_ROOT/core/profile.md.template"           "$NOTEBOOK_ROOT/mentors/profile.md"
 substitute "$FRAMEWORK_ROOT/core/season_current.md.template"    "$NOTEBOOK_ROOT/mentors/season_current.md"
 substitute "$FRAMEWORK_ROOT/core/coordinator_state.md.template" "$NOTEBOOK_ROOT/mentors/coordinator_state.md"
 substitute "$FRAMEWORK_ROOT/core/cross_domain.md.template"      "$NOTEBOOK_ROOT/mentors/cross_domain.md"
@@ -281,7 +285,7 @@ A personal mentor's-notebook built on [Trellis](https://github.com/your/Trellis)
 
 - \`CLAUDE.md\` — **the entry point.** Claude reads this automatically when you connect the folder; it tells the mentor team what to do. Start here.
 - \`CONFIG.md\` — your personalized parameters (edit any time)
-- \`profile.md\` — behavioral profile, filled in by mentors over time
+- \`mentors/profile.md\` — behavioral profile, filled in by mentors over time
 - \`mentors/\` — one folder per domain
 - \`mentors/season_current.md\` — what's Active / Seeding / Silent this season
 - \`mentors/coordinator_state.md\` — the coordinator's working memory
@@ -317,7 +321,7 @@ Be patient through the cold start — it's by design, not a defect:
 
 - **Week 1:** thin. The mentor only knows what you told it at intake. Advice is competent but not yet tailored.
 - **Weeks 2–3:** it starts noticing your patterns — when you actually do the work, what you skip, what's miscalibrated.
-- **Week 4+:** it gets good. \`profile.md\` fills with things you never said out loud, \`done_topics.md\` stops repeating work, and the weekly review catches what you didn't.
+- **Week 4+:** it gets good. \`mentors/profile.md\` fills with things you never said out loud, \`done_topics.md\` stops repeating work, and the weekly review catches what you didn't.
 
 Judge the system at week 4, not session 1.
 
@@ -327,7 +331,7 @@ The mentor writes files — that's the whole contract. After intake and after ea
 
 \`\`\`bash
 # Did intake populate your profile? (should show real content, no <placeholders>)
-cat profile.md
+cat mentors/profile.md
 
 # Did the last session get journalled?
 ls mentors/*/sessions/
@@ -368,7 +372,7 @@ standing instructions.
 ## Do this on the very first message
 
 If the user says "start my intake" / "set me up", **or** this is clearly a fresh notebook
-(\`profile.md\` still has \`<placeholder>\` text, or a **Setup brief** appears at the bottom of
+(\`mentors/profile.md\` still has \`<placeholder>\` text, or a **Setup brief** appears at the bottom of
 this file):
 
 1. Read \`framework/PROTOCOLS.md\` and run **PROTOCOL: INTAKE**.
@@ -398,7 +402,7 @@ this file):
 - \`framework/PROTOCOLS.md\` — the operating manual (every protocol, step by step)
 - \`framework/FIRST_PRINCIPLES.md\` — the constitution (P1–P9)
 - \`CONFIG.md\` — settings (name, rhythm, client)
-- \`profile.md\` — who the user is (you fill this in during intake)
+- \`mentors/profile.md\` — who the user is (you fill this in during intake)
 - \`mentors/<domain>/\` — one folder per mentor; read \`done_topics.md\` before proposing work
 - \`mentors/MEMORY.md\` — lessons/facts/asks; read it every session, write corrections back to it
 - \`mentors/season_current.md\` — what's active this season

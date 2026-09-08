@@ -1,60 +1,49 @@
 # Coordinator State
+*Budget (above the fold): ≤ 14 KB. The coordinator's between-domain working memory — the equivalent of `current_focus.md` for the coordinator itself. Read up to the HISTORY fold only: `sed -n '1,/^## ── HISTORY/p' mentors/coordinator_state.md`. Write rule: edit items in place; Active Watches are THIS WEEK ONLY and are rewritten in full at each review (the outgoing set moves below the fold verbatim); one line per item, each ending with `(set YYYY-MM-DD · clears when: …)`; never add a dated section above the fold. Last updated: <date of last review>.*
+*Owned by: the coordinator (edited during WEEKLY_REVIEW Phase 3 step 3.5). Read by: the coordinator at the start of every WEEKLY_REVIEW and by Domain Mentors with `Stakes: high_external` in their `current_focus.md`.*
 
-*Coordinator's own working memory across weekly reviews — the equivalent of `current_focus.md` but for the coordinator itself.*
-*Owned by: the coordinator (only edited during WEEKLY_REVIEW Phase 3 step 3.5).*
-*Read by: the coordinator at the start of every WEEKLY_REVIEW and by Domain Mentors with `Stakes: high_external` in their `current_focus.md`.*
-
-> **200-line cap.** When this file grows past 200 lines, overflow flushes to `coordinator_history/<YYYY>.md`. Keeps weekly-review cost bounded.
->
 > **Recurring asks live in `MEMORY.md → ASKS`, not here (P8: one ask, one home).** This file may *reference* an ask for cross-domain context, but the age/owner/status ledger and the mechanical age-based escalation belong to `mentors/MEMORY.md → ASKS`. Do not re-track an ask's age here.
 
----
-
 ## Cross-Domain Risks
-
 *Items that affect more than one domain. Surfaced here so the coordinator weighs them when allocating time next week.*
-
-- (none currently)
+- _(none currently)_
 
 ## Unresolved Trade-Offs
-
-*Decisions you've explicitly chosen to defer. Listed so they don't quietly become decisions-by-default.*
-
-- (none currently)
+*Decisions {{USER_NAME}} has explicitly chosen to defer. Listed so they don't quietly become decisions-by-default.*
+- _(none currently)_
 
 ## Capacity Warnings
-
-*Persistent capacity constraints the coordinator should respect. E.g. "Saturday low-energy after long week" or "evening slot is single-threaded — can't stack two domains there".*
-
-- (none currently)
+*Persistent capacity constraints the coordinator should respect. E.g. "Saturday low-energy after a long week" or "the evening slot is single-threaded — can't stack two domains there".*
+- _(none currently)_
 
 ## High-Stakes Register
-
 *Domains where a misstep has high external cost (a customer call, a medical decision, a presentation, a parenting moment that matters). Domain mentors with these stakes read this file at PREPARE.*
 
 | Domain | Stake | Current state | Next checkpoint |
 |---|---|---|---|
 
 ## Calibration Drift
+*Coordinator-observed drift in mentor calibration across domains. E.g. "the piano mentor has reduced difficulty 3 weeks in a row — investigate at next weekly review".*
+- _(none currently)_
 
-*Coordinator-observed drift in mentor calibration across domains. E.g. "fitness mentor has reduced difficulty 3 weeks in a row — investigate at next weekly review".*
+## Active Watches — for the next review only
+*Set <date of last review>. Rewritten in full at every review; the outgoing set moves below the fold verbatim under `### Active Watches — earlier sets`. Each watch says what is being watched, what would close it, and by when.*
+- _(none currently)_
 
-- (none currently)
+## Team board
+*One line per active domain, ≤ 40 words: where the domain stands and the one thing another mentor could use. Written by the coordinator from each mentor's TEAM_LINE at every review; copied into WEEK_BRIEF so mentors see each other. Updated <date of last review>.*
+- _(no active domains yet — one line per domain appears here after the first weekly review)_
 
-## Active Watches
+## System Upgrades
+See `framework/PROTOCOLS.md → SYSTEM UPGRADES` (binding). The full text of any upgrade adopted in this notebook goes below the fold.
 
-*Items the coordinator is actively watching this period. Each watch declares: what's being watched, what would close it, and the deadline. Auto-clears at WEEKLY_REVIEW Phase 3 step 3.5 unless re-flagged.*
+## ── HISTORY (on demand; agents do not read past this line) ──
 
-- (none currently)
+### Active Watches — earlier sets
+*(each superseded set, verbatim, newest first, headed `### Set YYYY-MM-DD`)*
 
-## Resolved This Period
+### Resolved
+*(items moved out of the sections above, with the date and the closing evidence)*
 
-*Items moved out of the sections above during the most recent WEEKLY_REVIEW. Kept here for one cycle then dropped, so the next review can see what closed.*
-
-- (none currently)
-
-## Revision Log
-
-*Append-only. One line per WEEKLY_REVIEW Phase 3 step 3.5 run.*
-
-- YYYY-MM-DD — initial bootstrap.
+### Revision Log
+*(one line per WEEKLY_REVIEW Phase 3 step 3.5 run — `YYYY-MM-DD — <what changed>`)*

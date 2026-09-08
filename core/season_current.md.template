@@ -1,7 +1,6 @@
 # Season {{SEASON_NUM}} — {{SEASON_START}} to {{SEASON_END}}
-
-*The currently-active season. Updated at the SEASON_TRANSITION protocol. Replaced wholesale at season end.*
-*Owned by: this file. Referenced by: every PROTOCOL when scheduling work.*
+*Budget (above the fold): ≤ 10 KB. Near-static within a season. Read up to the HISTORY fold only: `sed -n '1,/^## ── HISTORY/p' mentors/season_current.md`. Write rule: edit rows in place; an amended exit criterion keeps ONE current line here with `(amended ×N, last YYYY-MM-DD)` and its trail goes below the fold; the Upcoming table holds the next ~6 weeks only, past rows move below the fold; never add a dated section above the fold. Last updated: <date of last review>.*
+*The currently-active season. Updated at the SEASON_TRANSITION protocol and replaced wholesale at season end. Owned by: this file. Referenced by: every PROTOCOL when scheduling work.*
 
 > **Bootstrap note**: The dates above are a starting window from the setup wizard (season length × today). At INTAKE (your first conversation) the mentor confirms or changes them with you, along with domain states, "why this season", exit criteria, and locked slots. You don't fill the `<angle-bracket>` placeholders by hand; talk it through with the mentor instead (FIRST_PRINCIPLES P2).
 
@@ -17,13 +16,39 @@ Every domain in your `mentors/` folder has exactly one state this season:
 - **Seeding** — gets reconnaissance / intel updates, may get a session or two, but is not on the main weekly cadence yet. Becomes Active in a future season or stays Seeding indefinitely.
 - **Silent** — not getting attention this season. Folder exists, files are preserved, no mentor agent spawned, no time budget allocated. Reactivated in a future season if you want.
 
-| Domain | State | Why this season | Exit criterion |
+| Domain | State | Why this season | Season goal (one home: `mentors/<domain>/current_focus.md → Season goal`) |
 |---|---|---|---|
-| <domain> | Active | <one line> | <observable, time-bounded> |
+| <domain> | Active | <one line> | <one-line gist> → see `mentors/<domain>/current_focus.md → Season goal` |
 | <domain> | Seeding | <one line> | (none for this season — graduates to Active later) |
 | <domain> | Silent | <one line> | (none — sleeping) |
 
 > The point of distinguishing **Seeding** from **Active** is honesty: most people have more interests than they can do real work in. Seeding domains get curiosity, not commitments.
+
+---
+
+## Exit Criteria ({{SEASON_END}})
+
+*One current line per domain — observable, time-bounded. The live criterion is the `## Season goal` in that domain's `current_focus.md` (one home); this list is the season-wide index of it. When a criterion is amended, keep ONE current line here with `(amended ×N, last YYYY-MM-DD)` and put the original wording and every amendment below the fold under `### Exit Criteria — amendment trails`. At SEASON_TRANSITION the coordinator marks each Met ✅ / Partially Met ⚠️ / Not Met ❌ with one-line reasoning.*
+
+- **<domain>**: <criterion> → `mentors/<domain>/current_focus.md → Season goal`
+- **<domain>**: <criterion> → `mentors/<domain>/current_focus.md → Season goal`
+
+---
+
+## External Schedule Anchors (Locked Slots)
+
+*Non-negotiable commitments that bound the time budget. Coordinator must schedule around these, not over them.*
+
+| Day | Time | Domain | What it is |
+|---|---|---|---|
+
+---
+
+## Upcoming dates & disruptions (next 6 weeks)
+
+*Rewritten at each WEEKLY_REVIEW. One line per dated item you mention — travel, a holiday, a deadline, an exam, a race, a sick week — with the domains it touches, so next week's plan is realistic instead of a fantasy. Holds the next ~6 weeks only; rows that have passed move below the fold under `### Past disruptions`.*
+
+- <YYYY-MM-DD> — <what> — <impact on which domains>
 
 ---
 
@@ -47,28 +72,10 @@ This is the high-level routing layer that `core/PROTOCOLS.md` builds on. Default
 | "season review" or 1 week before season end | SEASON_TRANSITION protocol |
 | (silence for 14+ days) | INACTIVITY_RECOVERY on next interaction |
 
----
+## ── HISTORY (on demand; agents do not read past this line) ──
 
-## Known Disruptions Log
+### Exit Criteria — amendment trails
+*(one block per domain: the original wording, then each amendment dated — the single line above the fold is the only live one)*
 
-*Coordinator appends here whenever you mention travel, a holiday, a deadline, a sick week, etc. Helps next week's plan be realistic instead of a fantasy.*
-
-- YYYY-MM-DD — <disruption> — <impact on which domains>
-
----
-
-## External Schedule Anchors (Locked Slots)
-
-*Non-negotiable commitments that bound the time budget. Coordinator must schedule around these, not over them.*
-
-| Day | Time | Domain | What it is |
-|---|---|---|---|
-
----
-
-## Season Exit Criteria ({{SEASON_END}})
-
-*Per-domain: an observable, time-bounded outcome. At SEASON_TRANSITION the coordinator marks each Met ✅ / Partially Met ⚠️ / Not Met ❌ with one-line reasoning.*
-
-- **<domain>**: <criterion>
-- **<domain>**: <criterion>
+### Past disruptions
+*(rows dropped from the Upcoming table as their dates pass, oldest first)*
